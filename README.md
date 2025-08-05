@@ -1,172 +1,137 @@
 # 阿泽码字助手
 
-一个基于Web的AI辅助写作工具，支持文档管理、AI聊天、国际化等功能。
+一个专为网文写作者设计的AI辅助文档编辑器，集成OpenAI格式API和本地Ollama服务支持。
 
-## 功能特性
+## ✨ 主要功能
 
-### 📝 文档管理
-- **新建文档**: 快速创建新的写作项目
-- **文档列表**: 直观的文档管理界面，支持按时间排序
-- **实时保存**: 自动保存功能，防止意外丢失
-- **重命名/删除**: 完整的文档生命周期管理
+### 📄 文档管理
+- **左侧文档列表**：可隐藏侧边栏，支持快速切换文档
+- **文档操作**：右键菜单支持重命名、删除文档
+- **自动保存**：每30秒自动保存当前文档
+- **快捷键支持**：Ctrl+S保存，Ctrl+N新建文档
 
 ### 🤖 AI助手
-- **聊天对话**: 与AI进行自然语言对话
-- **AI编辑**: 选中文字后使用AI进行智能编辑
-- **多模型支持**: 支持OpenAI API和本地OLLAMA服务
-- **流式响应**: 实时显示AI回复内容
+- **右侧AI聊天**：可隐藏侧边栏，支持多模型选择
+- **浮动AI按钮**：可拖拽的悬浮按钮，选中文字后快速调用AI
+- **AI编辑模式**：
+  - 选中文字后点击浮动按钮
+  - 输入提示词进行AI编辑
+  - 支持替换、复制、接续三种操作
+  - 实时生成，可随时停止
 
-### 🌐 国际化
-- **多语言支持**: 中文和英文界面
-- **实时切换**: 无需重启即可切换语言
+### 🎯 写作优化
+- **专注写作**：简洁的编辑器界面
+- **代码字体**：等宽字体适合写作
+- **响应式设计**：支持移动端和桌面端
 
-### 🎨 界面特色
-- **现代化设计**: 清晰直观的用户界面
-- **响应式布局**: 适配不同屏幕尺寸
-- **深色模式**: 支持深色主题
-- **快捷键支持**: 常用操作的键盘快捷键
+### 📸 程序截图
 
-## 安装与运行
+![程序截图](https://github.com/Jasonshll/AzeWritingAssistant/blob/main/%E7%A8%8B%E5%BA%8F%E6%88%AA%E5%9B%BE.png)
 
-### 环境要求
-- Python 3.7+
-- Flask 2.3.3+
-- 现代浏览器
+## 🚀 快速开始
 
-### 快速开始
-
-1. **克隆项目**
-```bash
-git clone https://github.com/Jasonshll/AzeWritingAssistant.git
-cd AzeWritingAssistant
-```
-
-2. **安装依赖**
+### 安装依赖
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **运行应用**
+### 启动应用
 ```bash
 python app.py
 ```
 
-4. **访问应用**
-浏览器自动打开 http://localhost:5000
+### 访问应用
+打开浏览器访问：http://localhost:5000
 
-### Docker运行（可选）
-```bash
-docker build -t aze-writing-assistant .
-docker run -p 5000:5000 aze-writing-assistant
+## 📁 项目结构
+
+```
+阿泽码字助手/
+├── app.py                 # Flask主应用
+├── requirements.txt       # 项目依赖
+├── documents/            # 文档存储目录
+├── templates/
+│   └── index.html        # 主页面模板
+├── static/
+│   ├── css/
+│   │   └── style.css     # 样式文件
+│   └── js/
+│       └── app.js        # 前端交互逻辑
+└── README.md             # 项目说明
 ```
 
-## 使用指南
+## ⚙️ 配置说明
 
-### 基本操作
+### AI模型配置
+目前支持以下模型：
+- GPT-3.5 Turbo
+- GPT-4
+- Llama 2
+- Code Llama
 
-#### 文档操作
-1. **新建文档**: 点击左侧"新建文档"按钮
-2. **打开文档**: 点击文档列表中的文档名称
-3. **保存文档**: Ctrl+S 或自动保存
-4. **重命名**: 右键文档或点击重命名图标
-5. **删除文档**: 点击删除图标确认删除
+### 自定义AI API
+要连接真实的AI API，请修改`app.py`中的`/api/chat`端点：
 
-#### AI聊天
-1. **打开聊天**: 点击右侧AI助手图标
-2. **发送消息**: 输入消息后按Enter或点击发送
-3. **切换模型**: 在设置中选择不同的AI服务
+```python
+# 替换模拟回复为真实API调用
+import openai
+openai.api_key = "your-api-key"
 
-#### AI编辑
-1. **选中文字**: 在编辑器中选中要处理的文字
-2. **打开AI编辑**: 点击悬浮AI按钮或右键菜单
-3. **输入提示**: 告诉AI如何处理选中的文字
-4. **应用结果**: 选择替换、追加或复制AI生成的内容
+# 在chat()函数中添加真实API调用
+response = openai.ChatCompletion.create(
+    model=model,
+    messages=[{"role": "user", "content": message}]
+)
+```
 
-### 设置配置
+### Ollama集成
+要使用本地Ollama服务：
 
-#### OpenAI API
-1. 打开设置（右上角齿轮图标）
-2. 选择"在线API"服务类型
-3. 输入API地址（如：https://api.openai.com/v1/chat/completions）
-4. 输入API密钥
-5. 选择模型（如：gpt-3.5-turbo）
+```python
+import requests
 
-#### 本地OLLAMA
-1. 确保已安装并运行OLLAMA
-2. 在设置中选择"本地OLLAMA"服务类型
-3. 输入OLLAMA地址（默认：http://localhost:11434）
-4. 点击"刷新模型"获取可用模型
-5. 选择要使用的模型
+# 在chat()函数中添加Ollama调用
+response = requests.post('http://localhost:11434/api/generate', json={
+    'model': model,
+    'prompt': message,
+    'stream': False
+})
+```
 
-## 快捷键
+## 🎨 使用技巧
 
-| 快捷键 | 功能 |
-|--------|------|
-| Ctrl+S | 保存当前文档 |
-| Ctrl+N | 新建文档 |
-| Ctrl+Z | 撤销 |
-| Ctrl+Y | 重做 |
+### 文档管理
+1. **新建文档**：点击左侧"新建文档"按钮
+2. **快速切换**：点击文档列表中的文档
+3. **重命名**：右键文档 → 重命名
+4. **删除**：右键文档 → 删除
 
-## 技术架构
+### AI写作辅助
+1. **通用聊天**：在右侧AI助手中直接对话
+2. **选中编辑**：
+   - 在编辑器中选中文字
+   - 点击浮动AI按钮
+   - 输入编辑指令
+   - 选择操作方式
 
-### 前端技术
-- **HTML5**: 语义化标记
-- **CSS3**: 现代样式和动画
-- **JavaScript**: 交互逻辑
-- **Font Awesome**: 图标库
+### 快捷键
+- `Ctrl+S`：保存当前文档
+- `Ctrl+N`：新建文档
+- `Ctrl+Enter`：在AI编辑框中快速生成
 
-### 后端技术
-- **Flask**: Python Web框架
-- **RESTful API**: 标准的API设计
-- **文件存储**: 本地文本文件存储
-- **流式响应**: 支持AI回复的实时显示
+## 🛠️ 开发计划
 
-### 部署架构
-- **本地运行**: 单机版应用
-- **跨平台**: 支持Windows、macOS、Linux
-- **零配置**: 开箱即用
+- [ ] 支持Markdown格式
+- [ ] 添加写作统计功能
+- [ ] 集成更多AI模型
+- [ ] 添加云同步功能
+- [ ] 支持导出多种格式
+- [ ] 添加写作目标设置
 
-## 开发计划
+## 🤝 贡献
 
-### 即将推出
-- [ ] 文档版本历史
-- [ ] 多人协作编辑
-- [ ] 云端同步
-- [ ] 更多AI模型支持
-- [ ] 插件系统
+欢迎提交Issue和Pull Request来改进这个项目！
 
-### 长期规划
-- [ ] 移动端应用
-- [ ] 富文本编辑
-- [ ] 语音输入
-- [ ] 模板库
-- [ ] 导出多种格式
+## 📄 许可证
 
-## 贡献指南
-
-欢迎贡献代码！请遵循以下步骤：
-
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建 Pull Request
-
-## 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
-
-## 支持
-
-遇到问题或有建议？请通过以下方式联系我们：
-
-- **Issues**: [GitHub Issues](https://github.com/Jasonshll/AzeWritingAssistant/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Jasonshll/AzeWritingAssistant/discussions)
-
-## 致谢
-
-感谢所有贡献者和开源社区的支持！
-
----
-
-**阿泽码字助手** - 让写作更高效，让创作更轻松！
+MIT License - 详见LICENSE文件
